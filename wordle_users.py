@@ -39,16 +39,19 @@ class WordleUser:
         self.n_missed_games = self.n_days - len(self.games)
 
         box_dict = self.total_box_counts()
-        self.n_greens = box_dict['green']/len(self.games)
-        self.n_yellows = box_dict['yellow']/len(self.games)
+        
 
         if len(self.games) > 0:
           self.missed_score = self.n_missed_games * game.attempts_score_system["missed"]
           self.average_score = self.game_score/len(self.games)
+          self.n_greens = box_dict['green']/len(self.games)
+          self.n_yellows = box_dict['yellow']/len(self.games)
         else:
           print(f"{self.name} played zero games")
           self.missed_score = 0
           self.average_score = 0
+          self.n_greens = 0
+          self.n_yellows = 0
 
         self.total_score = self.missed_score + self.game_score
         
