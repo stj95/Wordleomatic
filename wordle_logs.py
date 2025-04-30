@@ -113,7 +113,7 @@ class WordleGame:
           5: 3,
           6: 5,
           None: 10,
-          "missed": 12 
+          "missed": 25
         }
         self.score = self.calculate_score()
     
