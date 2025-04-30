@@ -39,7 +39,10 @@ class WordleLog:
                     time_part = time_and_rest[0].replace('\u202f', ' ').strip()
                     timestamp_str = f"{date_part} {time_part}"
 
-                    timestamp = datetime.strptime(timestamp_str, "%m/%d/%y %I:%M %p")
+                    try:
+                        timestamp = datetime.strptime(timestamp_str, "%m/%d/%y %I:%M %p")
+                    except ValueError:
+                        timestamp = datetime.strptime(timestamp_str, "%m/%d/%y %H:%M")
 
                     # ✅ Filter by date range
                     if self.start_date.value and timestamp.date() < self.start_date.value:
