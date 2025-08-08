@@ -1,6 +1,26 @@
 from wordle_users import WordleUser
 from datetime import datetime
 
+
+def parse_timestamp(timestamp_str):
+    """Parse a timestamp string in several common formats.
+
+    Supports both US (month/day/year) and international (day/month/year)
+    ordering, 12- or 24-hour clocks, and optional seconds.
+    """
+
+    date_patterns = ["%m/%d/%y", "%d/%m/%y", "%m/%d/%Y", "%d/%m/%Y"]
+    time_patterns = ["%H:%M", "%H:%M:%S", "%I:%M %p", "%I:%M:%S %p"]
+
+    for d in date_patterns:
+        for t in time_patterns:
+            fmt = f"{d} {t}"
+            try:
+                return datetime.strptime(timestamp_str, fmt)
+            except ValueError:
+                continue
+    raise ValueError(f"Unrecognized date format: {timestamp_str}")
+
 class WordleLog:
     def __init__(self, startdate, enddate):
         self.users = {}
@@ -39,10 +59,7 @@ class WordleLog:
                     time_part = time_and_rest[0].replace('\u202f', ' ').strip()
                     timestamp_str = f"{date_part} {time_part}"
 
-                    try:
-                        timestamp = datetime.strptime(timestamp_str, "%m/%d/%y %I:%M %p")
-                    except ValueError:
-                        timestamp = datetime.strptime(timestamp_str, "%m/%d/%y %H:%M")
+                    timestamp = parse_timestamp(timestamp_str)
 
                     # ✅ Filter by date range
                     if self.start_date.value and timestamp.date() < self.start_date.value:
