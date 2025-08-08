@@ -1,5 +1,6 @@
 from wordle_users import WordleUser
 from datetime import datetime
+import unicodedata
 
 
 def parse_timestamp(timestamp_str):
@@ -10,6 +11,11 @@ def parse_timestamp(timestamp_str):
     whitespace (including non‑breaking spaces) is normalized before parsing.
     """
 
+    # Remove special formatting characters that may appear in some exports
+    # (e.g., left/right-to-left marks) before normalizing whitespace.
+    timestamp_str = "".join(
+        ch for ch in timestamp_str if unicodedata.category(ch) != "Cf"
+    )
     # Collapse all whitespace characters to single regular spaces to handle
     # non-breaking spaces or duplicate spacing found in some chat exports.
     timestamp_str = " ".join(timestamp_str.split())
