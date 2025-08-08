@@ -109,6 +109,10 @@ class WordleLog:
           else:
               try:
                     meta = line.split(' - ', 1)[1]
+                    # Ignore system messages like "X added you to a group"
+                    if "added you to" in meta.lower():
+                        i += 1
+                        continue
                     sender, rest = meta.split(':', 1)
                     user = self.get_or_create_user(sender.strip())
                     user.add_chat()
@@ -116,7 +120,7 @@ class WordleLog:
               except Exception as e:
                     pass
                     # print(f"Failed to parse Wordle message: {line}\nError: {e}")
-              
+
               i += 1
 
 
