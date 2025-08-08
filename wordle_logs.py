@@ -14,6 +14,7 @@ def parse_timestamp(timestamp_str):
     # non-breaking spaces or duplicate spacing found in some chat exports.
     timestamp_str = " ".join(timestamp_str.split())
 
+
     date_patterns = ["%m/%d/%y", "%d/%m/%y", "%m/%d/%Y", "%d/%m/%Y"]
     time_patterns = ["%H:%M", "%H:%M:%S", "%I:%M %p", "%I:%M:%S %p"]
 
