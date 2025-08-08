@@ -6,8 +6,14 @@ def parse_timestamp(timestamp_str):
     """Parse a timestamp string in several common formats.
 
     Supports both US (month/day/year) and international (day/month/year)
-    ordering, 12- or 24-hour clocks, and optional seconds.
+    ordering, 12- or 24-hour clocks, and optional seconds. Any irregular
+    whitespace (including non‑breaking spaces) is normalized before parsing.
     """
+
+    # Collapse all whitespace characters to single regular spaces to handle
+    # non-breaking spaces or duplicate spacing found in some chat exports.
+    timestamp_str = " ".join(timestamp_str.split())
+
 
     date_patterns = ["%m/%d/%y", "%d/%m/%y", "%m/%d/%Y", "%d/%m/%Y"]
     time_patterns = ["%H:%M", "%H:%M:%S", "%I:%M %p", "%I:%M:%S %p"]
@@ -56,7 +62,8 @@ class WordleLog:
                       continue
 
 
-                    time_part = time_and_rest[0].replace('\u202f', ' ').strip()
+                    # Normalize any exotic whitespace in the time component
+                    time_part = " ".join(time_and_rest[0].split())
                     timestamp_str = f"{date_part} {time_part}"
 
                     timestamp = parse_timestamp(timestamp_str)
