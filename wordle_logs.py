@@ -27,6 +27,7 @@ def parse_timestamp(timestamp_str):
     for d in date_patterns:
         for t in time_patterns:
             fmt = f"{d} {t}"
+            print(timestamp_str, fmt)
             try:
                 print(timestamp_str, fmt)
                 return datetime.strptime(timestamp_str, fmt)
